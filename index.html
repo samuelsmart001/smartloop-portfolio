@@ -421,6 +421,26 @@ footer{border-top:1px solid var(--line);padding-block:44px 90px}
 @media (max-width:820px){.cs{grid-template-columns:1fr}.cs:nth-child(even) .cs-visual{order:0;border-left:0}.cs-visual{border-right:0;border-bottom:1px solid var(--line)}.cs:nth-child(even) .cs-visual{border-bottom:1px solid var(--line)}}
 @media (max-width:420px){.m-posts{grid-template-columns:1fr 1fr}.m-post:last-child{grid-column:span 2}}
 .wa-float{bottom:calc(100px + env(safe-area-inset-bottom,0px))}
+
+/* gallery */
+.gal-filters{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:18px}
+.gal-filters button{font:600 .88rem/1 var(--body);padding:10px 16px;border-radius:999px;border:1px solid var(--line);background:var(--panel);color:var(--muted);cursor:pointer}
+.gal-filters button[aria-selected="true"]{background:var(--accent);color:var(--accent-ink);border-color:var(--accent)}
+.gal{columns:3 280px;column-gap:16px}
+.gtile{break-inside:avoid;margin:0 0 16px;display:block;width:100%;padding:0;border:1px solid var(--line);border-radius:14px;overflow:hidden;background:var(--panel);cursor:zoom-in;text-align:left;color:inherit;font:inherit;transition:transform .25s ease,border-color .25s ease,box-shadow .25s ease}
+.gtile:hover{transform:translateY(-3px);border-color:var(--accent);box-shadow:var(--glow)}
+.gtile img{display:block;width:100%;height:auto;background:var(--raise)}
+.gtile span{display:flex;justify-content:space-between;gap:10px;padding:12px 14px;font-size:.9rem;font-weight:600}
+.gtile em{font:500 .7rem/1.4 var(--mono);font-style:normal;color:var(--signal);white-space:nowrap}
+.gtile.pop{animation:pop .45s cubic-bezier(.2,.8,.3,1.3) both}
+.lb{max-width:min(1200px,94vw);width:100%;padding:0;border:1px solid var(--line);border-radius:16px;background:var(--panel);color:var(--ink)}
+.lb::backdrop{background:rgba(2,8,12,.85);backdrop-filter:blur(4px)}
+.lb figure{margin:0}
+.lb img{display:block;width:100%;max-height:78vh;object-fit:contain;background:var(--paper)}
+.lb figcaption{padding:14px 18px;font-weight:600}
+.lb-x,.lb-nav{position:absolute;z-index:2;border:0;border-radius:999px;background:color-mix(in srgb,var(--paper) 75%,transparent);color:var(--ink);cursor:pointer;font-size:1.4rem;line-height:1;width:44px;height:44px}
+.lb-x{top:10px;right:10px;font-size:1rem}
+.lb-nav{top:40%}.lb-prev{left:10px}.lb-next{right:10px}
 @media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}html{scroll-behavior:auto}}
 </style>
 </head>
@@ -712,6 +732,15 @@ footer{border-top:1px solid var(--line);padding-block:44px 90px}
           
         </article>
       </div>
+      <div class="work-sub" id="gallery"><h3>Project gallery</h3><span class="eyebrow" style="color:var(--muted)" id="galCount"></span></div>
+      <div class="gal-filters" role="tablist" aria-label="Filter gallery" id="galFilters"></div>
+      <div class="gal" id="galGrid"></div>
+      <dialog class="lb" id="lb" aria-label="Image viewer">
+        <button class="lb-x" id="lbClose" type="button" aria-label="Close">✕</button>
+        <button class="lb-nav lb-prev" id="lbPrev" type="button" aria-label="Previous image">‹</button>
+        <figure><img id="lbImg" alt=""><figcaption id="lbCap"></figcaption></figure>
+        <button class="lb-nav lb-next" id="lbNext" type="button" aria-label="Next image">›</button>
+      </dialog>
     </div>
   </section>
 
@@ -892,6 +921,33 @@ footer{border-top:1px solid var(--line);padding-block:44px 90px}
     b.addEventListener('keydown',function(e){var d=e.key==='ArrowRight'?1:e.key==='ArrowLeft'?-1:0;if(d){var m=tkNames[(i+d+tkNames.length)%tkNames.length];tkShow(m,animOK);tkTabs.children[(i+d+tkNames.length)%tkNames.length].focus();}});
     tkTabs.appendChild(b);});
   tkShow(tkNames[0],false);
+
+
+  // project gallery: add a line here for each new image in img/gallery/
+  var GALLERY=[
+    {src:'img/gallery/n8n-invoice-automation.webp',title:'Invoice automation in n8n',cat:'Automations',w:1400,h:950},
+    {src:'img/gallery/invoice-quickbooks-flow.webp',title:'Drive → Claude → QuickBooks → Sheets',cat:'Automations',w:627,h:159},
+    {src:'img/gallery/lead-capture-hubspot-flow.webp',title:'Facebook leads → Claude → HubSpot',cat:'AI agents',w:607,h:144}
+  ];
+  var gGrid=document.getElementById('galGrid'), gF=document.getElementById('galFilters'), gCount=document.getElementById('galCount'),
+      lb=document.getElementById('lb'), lbImg=document.getElementById('lbImg'), lbCap=document.getElementById('lbCap'), shown=[], cur=0;
+  var cats=['All'].concat(GALLERY.map(function(g){return g.cat;}).filter(function(c,i,a){return a.indexOf(c)===i;}));
+  function gShow(cat,anim){
+    [].forEach.call(gF.children,function(b){b.setAttribute('aria-selected',b.textContent===cat);});
+    shown=GALLERY.filter(function(g){return cat==='All'||g.cat===cat;});
+    gGrid.innerHTML=shown.map(function(g,i){return '<button type="button" class="gtile'+(anim?' pop':'')+'" style="animation-delay:'+(i*40)+'ms" data-i="'+i+'"><img src="'+g.src+'" alt="'+g.title+'" width="'+g.w+'" height="'+g.h+'" loading="lazy"><span>'+g.title+'<em>'+g.cat+'</em></span></button>';}).join('');
+    gCount.textContent=shown.length+(shown.length===1?' project':' projects');
+  }
+  cats.forEach(function(c){var b=document.createElement('button');b.type='button';b.setAttribute('role','tab');b.textContent=c;b.addEventListener('click',function(){gShow(c,true);});gF.appendChild(b);});
+  if(cats.length<3)gF.hidden=true;
+  gShow('All',false);
+  function open(i){cur=(i+shown.length)%shown.length;var g=shown[cur];lbImg.src=g.src;lbImg.alt=g.title;lbCap.textContent=g.title+' · '+g.cat;if(!lb.open)lb.showModal();}
+  gGrid.addEventListener('click',function(e){var t=e.target.closest('.gtile');if(t)open(+t.dataset.i);});
+  document.getElementById('lbClose').onclick=function(){lb.close();};
+  document.getElementById('lbPrev').onclick=function(){open(cur-1);};
+  document.getElementById('lbNext').onclick=function(){open(cur+1);};
+  lb.addEventListener('click',function(e){if(e.target===lb)lb.close();});
+  document.addEventListener('keydown',function(e){if(!lb.open)return;if(e.key==='ArrowRight')open(cur+1);if(e.key==='ArrowLeft')open(cur-1);});
 
   // rotating hero words
   var words=['on autopilot','handled by AI','done while you sleep','off your plate'], wi=0, rot=document.getElementById('rot');
