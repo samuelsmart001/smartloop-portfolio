@@ -1,0 +1,249 @@
+{
+  "name": "AI Lead Qualifier (SmartLoop Automation)",
+  "nodes": [
+    {
+      "id": "a1",
+      "name": "Website form",
+      "type": "n8n-nodes-base.formTrigger",
+      "typeVersion": 2.2,
+      "position": [
+        0,
+        0
+      ],
+      "webhookId": "smartloop-lead-form",
+      "parameters": {
+        "formTitle": "Tell us about your project",
+        "formDescription": "We reply within one working day.",
+        "formFields": {
+          "values": [
+            {
+              "fieldLabel": "Name",
+              "requiredField": true
+            },
+            {
+              "fieldLabel": "Email",
+              "fieldType": "email",
+              "requiredField": true
+            },
+            {
+              "fieldLabel": "Company"
+            },
+            {
+              "fieldLabel": "Role"
+            },
+            {
+              "fieldLabel": "Budget",
+              "fieldType": "dropdown",
+              "fieldOptions": {
+                "values": [
+                  {
+                    "option": "Not sure yet"
+                  },
+                  {
+                    "option": "Under $500"
+                  },
+                  {
+                    "option": "$500 - $2,000"
+                  },
+                  {
+                    "option": "$2,000 - $5,000"
+                  },
+                  {
+                    "option": "$5,000+"
+                  }
+                ]
+              }
+            },
+            {
+              "fieldLabel": "Message",
+              "fieldType": "textarea",
+              "requiredField": true
+            }
+          ]
+        },
+        "options": {}
+      }
+    },
+    {
+      "id": "a2",
+      "name": "Claude: qualify lead",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        260,
+        0
+      ],
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.anthropic.com/v1/messages",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "anthropic-version",
+              "value": "2023-06-01"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={{ JSON.stringify({ model: 'claude-haiku-4-5-20251001', max_tokens: 900, messages: [{ role: 'user', content: \"You are the lead-qualification step for a freelancer who sells Claude Code agents, n8n automations and CRM automation for small and mid-size businesses. Score this inbound lead from 0 to 100 for fit and likelihood to buy (70+ hot, 40-69 warm, under 40 not a fit now). Reply with ONLY a JSON object: {\"score\": number, \"summary\": string, \"fit_reasons\": [string], \"risks\": [string], \"next_action\": string, \"reply\": \"short warm email reply signed Inioluwa, under 110 words\"}.\\n\\nLead:\\n\" + JSON.stringify($json, null, 2) }] }) }}",
+        "options": {}
+      }
+    },
+    {
+      "id": "a3",
+      "name": "Read the verdict",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        520,
+        0
+      ],
+      "parameters": {
+        "jsCode": "const lead = $('Website form').first().json;\nconst text = $input.first().json.content?.[0]?.text || '';\nconst start = text.indexOf('{'), end = text.lastIndexOf('}');\nlet v = {};\ntry { v = JSON.parse(text.slice(start, end + 1)); } catch (e) { v = { score: 0, summary: 'Could not read Claude reply', raw: text }; }\nreturn [{ json: {\n  received_at: new Date().toISOString(),\n  name: lead.Name, email: lead.Email, company: lead.Company || '', role: lead.Role || '', budget: lead.Budget || '', message: lead.Message,\n  score: Number(v.score) || 0, summary: v.summary || '',\n  fit_reasons: (v.fit_reasons || []).join('; '), risks: (v.risks || []).join('; '),\n  next_action: v.next_action || '', reply_draft: v.reply || ''\n} }];"
+      }
+    },
+    {
+      "id": "a4",
+      "name": "Score 70 or more?",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2,
+      "position": [
+        780,
+        0
+      ],
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "loose"
+          },
+          "conditions": [
+            {
+              "id": "c1",
+              "leftValue": "={{ $json.score }}",
+              "rightValue": 70,
+              "operator": {
+                "type": "number",
+                "operation": "gte"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      }
+    },
+    {
+      "id": "a5",
+      "name": "Alert me: hot lead",
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.1,
+      "position": [
+        1040,
+        -120
+      ],
+      "parameters": {
+        "sendTo": "samuelsmart231@gmail.com",
+        "subject": "=🔥 Hot lead ({{ $json.score }}/100): {{ $json.name }}, {{ $json.company }}",
+        "emailType": "text",
+        "message": "={{ $json.summary }}\n\nWhy it fits: {{ $json.fit_reasons }}\nWatch out: {{ $json.risks }}\nNext: {{ $json.next_action }}\n\nLead: {{ $json.name }} <{{ $json.email }}>\nBudget: {{ $json.budget }}\nMessage: {{ $json.message }}\n\n--- Draft reply (check before sending) ---\n{{ $json.reply_draft }}",
+        "options": {}
+      }
+    },
+    {
+      "id": "a6",
+      "name": "Log to Google Sheets",
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.5,
+      "position": [
+        1040,
+        120
+      ],
+      "parameters": {
+        "operation": "append",
+        "documentId": {
+          "__rl": true,
+          "mode": "url",
+          "value": ""
+        },
+        "sheetName": {
+          "__rl": true,
+          "mode": "name",
+          "value": "Leads"
+        },
+        "columns": {
+          "mappingMode": "autoMapInputData",
+          "value": {}
+        },
+        "options": {}
+      }
+    }
+  ],
+  "connections": {
+    "Website form": {
+      "main": [
+        [
+          {
+            "node": "Claude: qualify lead",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Claude: qualify lead": {
+      "main": [
+        [
+          {
+            "node": "Read the verdict",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Read the verdict": {
+      "main": [
+        [
+          {
+            "node": "Score 70 or more?",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Score 70 or more?": {
+      "main": [
+        [
+          {
+            "node": "Alert me: hot lead",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Log to Google Sheets",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Log to Google Sheets",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "pinData": {}
+}
