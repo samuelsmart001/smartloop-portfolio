@@ -450,6 +450,35 @@ footer{border-top:1px solid var(--line);padding-block:44px 90px}
 .feat-body span:not(.kind){color:var(--muted)}
 .feat-body em{font-style:normal;font-weight:600;color:var(--accent)}
 @media (max-width:760px){.feat{grid-template-columns:1fr}}
+
+/* big outlined marquee */
+.bigmq{overflow:hidden;border-block:1px solid var(--line);padding-block:clamp(18px,3vw,34px);background:color-mix(in srgb,var(--panel) 60%,transparent)}
+.bigtrack{display:flex;align-items:center;gap:clamp(24px,4vw,56px);width:max-content;animation:slide 50s linear infinite}
+.bigtrack span{font:900 clamp(3rem,9vw,7.5rem)/1 var(--display);font-stretch:118%;letter-spacing:-.02em;color:transparent;-webkit-text-stroke:1.5px color-mix(in srgb,var(--muted) 70%,transparent);white-space:nowrap;transition:color .3s ease}
+.bigtrack span:hover{color:var(--accent);-webkit-text-stroke-color:var(--accent)}
+.bigtrack i{width:clamp(14px,1.8vw,24px);height:clamp(14px,1.8vw,24px);border-radius:50%;background:var(--accent);flex:none;box-shadow:0 0 20px var(--accent)}
+.bigmq:hover .bigtrack{animation-play-state:paused}
+/* numbered service rows */
+.srows{list-style:none;margin:0 0 34px;padding:0;border-top:1px solid var(--ink)}
+.srow{width:100%;display:grid;grid-template-columns:60px 1fr 1.2fr 56px;gap:20px;align-items:center;padding:24px 0;border:0;border-bottom:1px solid var(--line);background:transparent;color:var(--ink);text-align:left;cursor:pointer;font:inherit}
+.sn{font:500 .8rem/1 var(--mono);color:var(--muted)}
+.st{font:800 clamp(1.4rem,3.2vw,2.3rem)/1.05 var(--display);font-stretch:108%;letter-spacing:-.02em;transition:color .2s ease,transform .25s ease}
+.sd{color:var(--muted);font-size:.98rem}
+.sa{width:48px;height:48px;border-radius:50%;border:1.5px solid var(--ink);display:grid;place-items:center;font-size:1.2rem;transition:all .25s ease}
+.srow:hover .st{color:var(--accent);transform:translateX(6px)}
+.srow:hover .sa{background:var(--accent);border-color:var(--accent);color:var(--accent-ink);transform:rotate(45deg)}
+@media (max-width:760px){.srow{grid-template-columns:36px 1fr 44px;row-gap:6px}.sd{grid-column:2/3;grid-row:2}.sa{width:40px;height:40px;grid-row:1/3;grid-column:3}}
+/* industry cards */
+.icards{display:grid;grid-template-columns:repeat(4,1fr);gap:16px}
+.icard{position:relative;display:grid;gap:10px;align-content:start;padding:22px 22px 26px;border:1.5px solid var(--line);border-radius:18px;background:var(--panel);text-decoration:none;color:inherit;transition:transform .2s ease,box-shadow .2s ease,border-color .2s ease}
+.icard .in{font:600 .8rem/1 var(--mono);color:var(--ic)}
+.icard .ia{position:absolute;top:18px;right:20px;color:var(--muted);transition:color .2s ease,transform .2s ease}
+.icard b{font:800 1.25rem/1.15 var(--display);font-stretch:106%}
+.icard .id{color:var(--muted);font-size:.92rem}
+.icard:hover{transform:translate(-4px,-4px);border-color:var(--ic);box-shadow:8px 8px 0 var(--ic)}
+.icard:hover .ia{color:var(--ic);transform:translate(2px,-2px)}
+@media (max-width:1000px){.icards{grid-template-columns:repeat(2,1fr)}}
+@media (max-width:520px){.icards{grid-template-columns:1fr}}
 @media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}html{scroll-behavior:auto}}
 </style>
 </head>
@@ -529,12 +558,15 @@ footer{border-top:1px solid var(--line);padding-block:44px 90px}
     </div>
   </section>
 
+  <div class="bigmq" aria-hidden="true"><div class="bigtrack"><span>AI AGENTS</span><i></i><span>CLAUDE CODE</span><i></i><span>N8N AUTOMATIONS</span><i></i><span>MCP SERVERS</span><i></i><span>CRM SYSTEMS</span><i></i><span>AI AGENTS</span><i></i><span>CLAUDE CODE</span><i></i><span>N8N AUTOMATIONS</span><i></i><span>MCP SERVERS</span><i></i><span>CRM SYSTEMS</span><i></i></div></div>
+
   <section id="services">
     <div class="wrap">
       <div class="sec-head">
         <p class="eyebrow">Services</p>
         <h2>What I can build for you</h2>
       </div>
+<ol class="srows"><li><button type="button" class="srow" data-tab="t-auto"><span class="sn">01</span><span class="st">Automations</span><span class="sd">Lead capture, onboarding, reminders and reports that run on their own.</span><span class="sa" aria-hidden="true">↗</span></button></li><li><button type="button" class="srow" data-tab="t-agents"><span class="sn">02</span><span class="st">AI agents</span><span class="sd">Claude agents that read, decide and act, and ask you before anything sensitive.</span><span class="sa" aria-hidden="true">↗</span></button></li><li><button type="button" class="srow" data-tab="t-mcp"><span class="sn">03</span><span class="st">MCP & integrations</span><span class="sd">Claude plugged straight into HubSpot, GoHighLevel, Notion, Shopify and your data.</span><span class="sa" aria-hidden="true">↗</span></button></li><li><button type="button" class="srow" data-tab="t-apps"><span class="sn">04</span><span class="st">Apps & websites</span><span class="sd">Dashboards, portals and sites built with Claude Code, as real code you own.</span><span class="sa" aria-hidden="true">↗</span></button></li><li><button type="button" class="srow" data-tab="t-team"><span class="sn">05</span><span class="st">Claude for teams</span><span class="sd">Setup, Skills and training so your whole team gets real work out of Claude.</span><span class="sa" aria-hidden="true">↗</span></button></li></ol>
       <div class="tabs" role="tablist" aria-label="Services">
         <button class="tab" role="tab" id="t-auto" aria-controls="p-auto" aria-selected="true">Automations</button>
         <button class="tab" role="tab" id="t-agents" aria-controls="p-agents" aria-selected="false" tabindex="-1">AI agents</button>
@@ -764,20 +796,7 @@ footer{border-top:1px solid var(--line);padding-block:44px 90px}
         <p class="eyebrow">Industries</p>
         <h2>Built for how your business works</h2>
       </div>
-      <div class="inds">
-        <div>
-          <details open><summary>Real estate</summary><p>Instant replies to property enquiries, viewing bookings, and follow-ups that don't depend on someone remembering.</p></details>
-          <details><summary>E-commerce</summary><p>Order and stock sync, abandoned-cart follow-ups, and a support agent that answers delivery questions.</p></details>
-          <details><summary>Agencies</summary><p>Client onboarding, weekly reporting and content workflows that scale without hiring more admin.</p></details>
-          <details><summary>Clinics &amp; healthcare</summary><p>Appointment reminders, intake forms into your system, and patient FAQ replies with human approval.</p></details>
-        </div>
-        <div>
-          <details><summary>Logistics</summary><p>Shipment status updates, driver alerts and daily summaries pulled from your tracking tools.</p></details>
-          <details><summary>Professional services</summary><p>Document processing, proposal drafting and CRM follow-ups for consultants, lawyers and accountants.</p></details>
-          <details><summary>Coaches &amp; creators</summary><p>Lead capture, booking, content repurposing and community replies on autopilot.</p></details>
-          <details style="border-bottom:1px solid var(--line)"><summary>SaaS</summary><p>Trial follow-ups, support triage, usage reports and Claude features inside your product.</p></details>
-        </div>
-      </div>
+      <div class="icards"><a class="icard" style="--ic:var(--accent)" href="https://wa.me/2349066765517?text=Hi%20Inioluwa,%20I%20run%20a%20real%20estate%20business%20and%20want%20to%20automate" target="_blank" rel="noopener"><span class="in">01</span><span class="ia" aria-hidden="true">↗</span><b>Real estate</b><span class="id">Instant replies to property enquiries, viewing bookings and follow-ups that never slip.</span></a><a class="icard" style="--ic:var(--signal)" href="https://wa.me/2349066765517?text=Hi%20Inioluwa,%20I%20run%20a%20e-commerce%20business%20and%20want%20to%20automate" target="_blank" rel="noopener"><span class="in">02</span><span class="ia" aria-hidden="true">↗</span><b>E-commerce</b><span class="id">Order and stock sync, abandoned-cart follow-ups and a support agent for delivery questions.</span></a><a class="icard" style="--ic:#7EA6FF" href="https://wa.me/2349066765517?text=Hi%20Inioluwa,%20I%20run%20a%20agencies%20business%20and%20want%20to%20automate" target="_blank" rel="noopener"><span class="in">03</span><span class="ia" aria-hidden="true">↗</span><b>Agencies</b><span class="id">Client onboarding, weekly reporting and content workflows that scale without more admin.</span></a><a class="icard" style="--ic:#F5C451" href="https://wa.me/2349066765517?text=Hi%20Inioluwa,%20I%20run%20a%20clinics%20&%20healthcare%20business%20and%20want%20to%20automate" target="_blank" rel="noopener"><span class="in">04</span><span class="ia" aria-hidden="true">↗</span><b>Clinics & healthcare</b><span class="id">Appointment reminders, digital intake and after-hours answers with human approval.</span></a><a class="icard" style="--ic:var(--accent)" href="https://wa.me/2349066765517?text=Hi%20Inioluwa,%20I%20run%20a%20logistics%20business%20and%20want%20to%20automate" target="_blank" rel="noopener"><span class="in">05</span><span class="ia" aria-hidden="true">↗</span><b>Logistics</b><span class="id">Shipment updates, driver alerts and daily summaries pulled from your tracking tools.</span></a><a class="icard" style="--ic:var(--signal)" href="https://wa.me/2349066765517?text=Hi%20Inioluwa,%20I%20run%20a%20professional%20services%20business%20and%20want%20to%20automate" target="_blank" rel="noopener"><span class="in">06</span><span class="ia" aria-hidden="true">↗</span><b>Professional services</b><span class="id">Document processing, proposal drafts and CRM follow-ups for consultants, lawyers and accountants.</span></a><a class="icard" style="--ic:#7EA6FF" href="https://wa.me/2349066765517?text=Hi%20Inioluwa,%20I%20run%20a%20coaches%20&%20creators%20business%20and%20want%20to%20automate" target="_blank" rel="noopener"><span class="in">07</span><span class="ia" aria-hidden="true">↗</span><b>Coaches & creators</b><span class="id">Lead capture, booking, content repurposing and community replies on autopilot.</span></a><a class="icard" style="--ic:#F5C451" href="https://wa.me/2349066765517?text=Hi%20Inioluwa,%20I%20run%20a%20saas%20&%20startups%20business%20and%20want%20to%20automate" target="_blank" rel="noopener"><span class="in">08</span><span class="ia" aria-hidden="true">↗</span><b>SaaS & startups</b><span class="id">Trial follow-ups, support triage, usage reports and Claude features inside your product.</span></a></div>
     </div>
   </section>
 
@@ -964,13 +983,16 @@ footer{border-top:1px solid var(--line);padding-block:44px 90px}
   lb.addEventListener('click',function(e){if(e.target===lb)lb.close();});
   document.addEventListener('keydown',function(e){if(!lb.open)return;if(e.key==='ArrowRight')open(cur+1);if(e.key==='ArrowLeft')open(cur-1);});
 
+
+  // service rows open their tab
+  [].forEach.call(document.querySelectorAll('.srow'),function(r){r.addEventListener('click',function(){var t=document.getElementById(r.dataset.tab);if(t){t.click();t.scrollIntoView({behavior:'smooth',block:'center'});}});});
   // rotating hero words
   var words=['on autopilot','handled by AI','done while you sleep','off your plate'], wi=0, rot=document.getElementById('rot');
   if(!matchMedia('(prefers-reduced-motion: reduce)').matches){
     setInterval(function(){rot.classList.add('out');setTimeout(function(){wi=(wi+1)%words.length;rot.firstChild.textContent=words[wi];rot.classList.remove('out');},350);},2800);
 
     // scroll reveal (only for things below the first screen)
-    var els=[].slice.call(document.querySelectorAll('.sec-head,.stats,.tk-head,.panel,.see .run,.case,.cs,.wf,.wcol,.about-photo,.about-copy,.inds,.hcard,.steps li,.review,.faq,.cta-box'));
+    var els=[].slice.call(document.querySelectorAll('.sec-head,.stats,.tk-head,.panel,.see .run,.case,.cs,.wf,.srows,.icard,.wcol,.about-photo,.about-copy,.inds,.hcard,.steps li,.review,.faq,.cta-box'));
     if('IntersectionObserver' in window){
       var io=new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting){e.target.classList.remove('pre');io.unobserve(e.target);}});},{rootMargin:'0px 0px -8% 0px'});
       els.forEach(function(el,k){if(el.getBoundingClientRect().top>innerHeight){el.classList.add('rv','pre');el.style.transitionDelay=((k%3)*80)+'ms';io.observe(el);}});
