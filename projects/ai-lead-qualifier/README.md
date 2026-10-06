@@ -1,6 +1,6 @@
 # AI Lead Qualifier
 
-A SmartLoop Automation project by Inioluwa Adebisi.
+A SamuelSmart Automation project by Inioluwa Adebisi.
 
 Every new lead from a website form is read by Claude, scored 0–100 for fit, explained, routed and given a draft reply.
 

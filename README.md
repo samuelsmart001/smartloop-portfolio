@@ -1,4 +1,4 @@
-# SmartLoop Automation
+# SamuelSmart Automation
 
 Portfolio website for Inioluwa Adebisi, Claude Code developer: AI agents, n8n automations and MCP integrations.
 
