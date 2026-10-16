@@ -1,0 +1,160 @@
+{
+  "name": "Weekly Report Agent (SamuelSmart Automation)",
+  "nodes": [
+    {
+      "id": "w1",
+      "name": "Every Monday",
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.2,
+      "position": [
+        0,
+        0
+      ],
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "field": "weeks",
+              "triggerAtDay": [
+                1
+              ],
+              "triggerAtHour": 8
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "w2",
+      "name": "Read the sheet",
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.5,
+      "position": [
+        240,
+        0
+      ],
+      "parameters": {
+        "documentId": {
+          "__rl": true,
+          "mode": "url",
+          "value": ""
+        },
+        "sheetName": {
+          "__rl": true,
+          "mode": "name",
+          "value": "Sales"
+        },
+        "options": {}
+      }
+    },
+    {
+      "id": "w3",
+      "name": "Do the maths",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        480,
+        0
+      ],
+      "parameters": {
+        "jsCode": "const rows = $input.all().map(i => i.json);\nconst day = 864e5, now = new Date();\nconst num = v => Number(String(v ?? '').replace(/[^0-9.\\-]/g, '')) || 0;\nconst parse = v => { const d = new Date(v); return isNaN(d) ? null : d; };\nconst start = new Date(now - 7 * day), prevStart = new Date(now - 14 * day);\nconst dated = rows.map(r => ({ ...r, _d: parse(r.Date) }));\nlet week = dated.filter(r => r._d && r._d >= start && r._d < now);\nconst prev = dated.filter(r => r._d && r._d >= prevStart && r._d < start);\nif (!week.length) week = dated; // dates not readable: use every row in the sheet\nconst revenue = week.reduce((s, r) => s + num(r.Amount), 0);\nconst items = week.reduce((s, r) => s + num(r.Qty), 0);\nconst prevRevenue = prev.reduce((s, r) => s + num(r.Amount), 0);\nconst byProduct = {}, byDay = {};\nfor (const r of week) {\n  const p = r.Product || 'Other';\n  byProduct[p] = byProduct[p] || { product: p, qty: 0, amount: 0 };\n  byProduct[p].qty += num(r.Qty); byProduct[p].amount += num(r.Amount);\n  const d = String(r.Date); byDay[d] = (byDay[d] || 0) + num(r.Amount);\n}\nconst top = Object.values(byProduct).sort((a, b) => b.amount - a.amount);\nconst best = Object.entries(byDay).sort((a, b) => b[1] - a[1])[0] || ['-', 0];\nreturn [{ json: {\n  revenue: +revenue.toFixed(2), orders: week.length, items,\n  average_order: week.length ? +(revenue / week.length).toFixed(2) : 0,\n  previous_week_revenue: prevRevenue ? +prevRevenue.toFixed(2) : null,\n  change_percent: prevRevenue ? Math.round((revenue - prevRevenue) / prevRevenue * 100) : null,\n  top_products: top.slice(0, 5), best_day: { date: best[0], amount: +(+best[1]).toFixed(2) }\n} }];"
+      }
+    },
+    {
+      "id": "Claude_writes_it",
+      "name": "Claude writes it",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        720,
+        0
+      ],
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.anthropic.com/v1/messages",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "anthropic-version",
+              "value": "2023-06-01"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={{ JSON.stringify({ model: 'claude-haiku-4-5-20251001', max_tokens: 700, messages: [{ role: 'user', content: \"Write a short weekly business email for a small business owner from these numbers. Plain text, under 180 words. Format: a one-line greeting; a line with revenue and the change on last week (skip the change if it is null); orders, items and average order; 'What stood out' with 3 short bullets; 'Three things to do this week' with 3 numbered, specific actions. Use only the numbers given, never invent any. End with 'Have a great week.'\\n\\nNumbers (JSON):\\n\" + JSON.stringify($json, null, 2) }] }) }}",
+        "options": {}
+      }
+    },
+    {
+      "id": "w5",
+      "name": "Email you",
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.1,
+      "position": [
+        960,
+        0
+      ],
+      "parameters": {
+        "sendTo": "you@yourbusiness.com",
+        "subject": "=Your week in numbers ({{ $now.minus({days: 7}).toFormat('d LLL') }} to {{ $now.minus({days: 1}).toFormat('d LLL') }})",
+        "emailType": "text",
+        "message": "={{ $json.content[0].text }}",
+        "options": {}
+      }
+    }
+  ],
+  "connections": {
+    "Every Monday": {
+      "main": [
+        [
+          {
+            "node": "Read the sheet",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Read the sheet": {
+      "main": [
+        [
+          {
+            "node": "Do the maths",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Do the maths": {
+      "main": [
+        [
+          {
+            "node": "Claude writes it",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Claude writes it": {
+      "main": [
+        [
+          {
+            "node": "Email you",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "pinData": {}
+}

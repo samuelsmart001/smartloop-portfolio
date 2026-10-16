@@ -567,8 +567,58 @@ body{top:0!important}
 .skiptranslate iframe,iframe.skiptranslate,.goog-te-banner-frame,#goog-gt-tt,.goog-te-balloon-frame,.VIpgJd-ZVi9od-ORHb-OEVmcd,.VIpgJd-ZVi9od-aZ2wEe-wOHMyf{display:none!important}
 .goog-text-highlight{background:none!important;box-shadow:none!important}
 font{background:transparent!important;box-shadow:none!important}
+
+/* planner */
+.planner{display:grid;grid-template-columns:1.25fr .75fr;gap:24px;align-items:start}
+@media (max-width:900px){.planner{grid-template-columns:1fr}}
+.pform{display:grid;gap:14px}
+.pform fieldset{margin:0;border:1px solid var(--line);border-radius:18px;padding:20px 20px 22px;background:var(--panel);min-width:0}
+.pform legend{display:flex;align-items:center;gap:10px;padding:0 6px;font:700 1.02rem/1.2 var(--display);font-stretch:104%}
+.pform legend span{display:grid;place-items:center;width:24px;height:24px;border-radius:7px;background:var(--accent);color:var(--accent-ink);font:700 .75rem/1 var(--mono)}
+.pform legend small{font:400 .8rem/1 var(--body);color:var(--muted)}
+.pchips{display:flex;flex-wrap:wrap;gap:8px;margin-top:6px}
+.pchip{padding:10px 14px;border-radius:999px;border:1px solid var(--line);background:var(--raise);color:var(--ink);font:500 .92rem/1.1 var(--body);cursor:pointer;transition:all .15s ease}
+.pchip.sm{padding:8px 12px;font-size:.85rem}
+.pchip:hover{border-color:var(--accent)}
+.pchip[aria-pressed="true"]{background:var(--accent);border-color:var(--accent);color:var(--accent-ink);font-weight:600}
+.pform label{display:block;font:500 .72rem/1 var(--mono);letter-spacing:.08em;text-transform:uppercase;color:var(--muted);margin:14px 0 6px}
+.pform .sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}
+.pform input,.pform textarea,.pform select{width:100%;background:var(--raise);border:1px solid var(--line);border-radius:12px;color:var(--ink);font:400 .95rem/1.45 var(--body);padding:11px 13px}
+.pform textarea{margin-top:8px;resize:vertical}
+.pform input:focus,.pform textarea:focus,.pform select:focus{outline:none;border-color:var(--accent)}
+.prow{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+@media (max-width:520px){.prow{grid-template-columns:1fr}}
+.presult{position:sticky;top:calc(84px + env(safe-area-inset-top,0px));display:grid;gap:12px;padding:26px 24px;border:1.5px solid var(--accent);border-radius:20px;background:var(--panel);box-shadow:var(--glow)}
+.presult h3{font:800 1.4rem/1.15 var(--display);font-stretch:106%;margin-top:4px}
+.pempty{color:var(--muted);padding:24px 0;border-top:1px dashed var(--line);border-bottom:1px dashed var(--line)}
+.rsave{padding:10px 12px;border-radius:12px;background:color-mix(in srgb,var(--signal) 12%,transparent);color:var(--ink);font-size:.9rem}
+.rsend{display:grid;gap:10px;margin-top:6px}
+.rsend .btn{justify-content:center}
+.rnote{font-size:.85rem;color:var(--muted);text-align:center}
+.rnote.ok{color:var(--accent)}
+.rnote.err{color:var(--signal)}
+/* free audit band */
+.audit{display:grid;grid-template-columns:auto 1fr auto;gap:18px;align-items:center;margin-top:40px;padding:22px 24px;border:1.5px dashed var(--signal);border-radius:20px;background:color-mix(in srgb,var(--signal) 7%,transparent)}
+.audit-ic{display:grid;place-items:center;width:48px;height:48px;border-radius:14px;background:var(--signal);color:var(--signal-ink);font-size:1.4rem}
+.audit b{display:block;font:800 1.2rem/1.2 var(--display);font-stretch:106%}
+.audit span{color:var(--muted);font-size:.95rem}
+@media (max-width:760px){.audit{grid-template-columns:1fr}.audit .btn{justify-self:start}}
+
+.owns{display:grid;grid-template-columns:repeat(3,1fr);gap:22px;margin:8px 0 30px}
+@media (max-width:980px){.owns{grid-template-columns:1fr 1fr}}
+@media (max-width:620px){.owns{grid-template-columns:1fr}}
+.own{display:grid;grid-template-rows:auto 1fr;border:1.5px solid var(--line);border-radius:18px;overflow:hidden;background:var(--panel);text-decoration:none;color:inherit;transition:transform .22s ease,box-shadow .22s ease,border-color .22s ease}
+.own:hover{transform:translate(-5px,-5px);border-color:var(--accent);box-shadow:10px 10px 0 var(--accent)}
+.own-img{display:block;aspect-ratio:16/10;overflow:hidden;border-bottom:1px solid var(--line);background:var(--raise)}
+.own-img img{width:100%;height:100%;object-fit:cover;object-position:top left;display:block;transition:transform .5s ease}
+.own:hover .own-img img{transform:scale(1.04)}
+.own-b{display:flex;flex-direction:column;align-items:flex-start;gap:8px;padding:18px 18px 20px}
+.own-b b{font:800 1.25rem/1.15 var(--display);font-stretch:106%}
+.own-b span:not(.gpill){color:var(--muted);font-size:.93rem}
+.own-b em{margin-top:auto;padding-top:6px;font-style:normal;font-weight:700;color:var(--accent)}
 @media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}html{scroll-behavior:auto}}
 </style>
+<script defer src="/_vercel/insights/script.js"></script>
 </head>
 <body style="margin:0">
 <header class="nav">
@@ -585,6 +635,7 @@ font{background:transparent!important;box-shadow:none!important}
       <li><a href="#pricing">Pricing</a></li>
       <li><a href="#hire">Hire me</a></li>
       <li><a href="#faq">FAQ</a></li>
+      <li><a href="#start">Get a plan</a></li>
     </ul>
     <div class="nav-right">
     <div class="lang notranslate" translate="no">
@@ -856,10 +907,13 @@ font{background:transparent!important;box-shadow:none!important}
 
       </div>
 
-      <a class="feat" href="projects/ai-lead-qualifier/">
-        <img src="img/gallery/ai-lead-qualifier.webp" alt="AI Lead Qualifier project page" width="1280" height="860" loading="lazy">
-        <span class="feat-body"><span class="kind demo">New project</span><b>AI Lead Qualifier</b><span>Claude scores every new lead from 0 to 100, explains why, routes it and drafts the reply. Comes with an importable n8n workflow.</span><em>Open the project →</em></span>
-      </a>
+      <div class="work-sub"><h3>Projects I built and share</h3><span class="eyebrow" style="color:var(--muted)">open, try, download</span></div>
+      <div class="owns">
+        <a class="own" href="projects/ai-lead-qualifier/"><span class="own-img"><img src="img/gallery/ai-lead-qualifier.webp" alt="AI Lead Qualifier project page" width="1280" height="860" loading="lazy"></span><span class="own-b"><span class="gpill">AI agent</span><b>AI Lead Qualifier</b><span>Claude scores every new lead from 0 to 100, explains why and drafts the reply.</span><em>Open the project →</em></span></a>
+        <a class="own" href="projects/weekly-report-agent/"><span class="own-img"><img src="img/gallery/weekly-report-agent.webp" alt="Weekly Report Agent project page" width="1280" height="860" loading="lazy"></span><span class="own-b"><span class="gpill">Reporting</span><b>Weekly Report Agent</b><span>Every Monday, last week's numbers arrive as a plain-English email with three next steps.</span><em>Open the project →</em></span></a>
+        <a class="own" href="projects/invoice-reader/"><span class="own-img"><img src="img/gallery/invoice-reader.webp" alt="Invoice Reader project page" width="1280" height="860" loading="lazy"></span><span class="own-b"><span class="gpill">Finance</span><b>Invoice Reader</b><span>PDF invoices from email are read by Claude and logged to Google Sheets, nothing typed twice.</span><em>Open the project →</em></span></a>
+      </div>
+
 
       <div class="work-sub"><h3>Automation workflows</h3><span class="eyebrow" style="color:var(--muted)">demo builds</span></div>
       <div class="wf-list">
@@ -973,6 +1027,11 @@ font{background:transparent!important;box-shadow:none!important}
         <li><span>03</span>Built and tested in milestones</li>
         <li><span>04</span>Handover with docs and support</li>
       </ol>
+      <div class="audit">
+        <div class="audit-ic" aria-hidden="true">✦</div>
+        <div><b>Free 15-minute automation audit</b><span>Not sure what to automate first? Send me one workflow and I'll reply within 24 hours with three ways AI could save you time. No cost, no obligation.</span></div>
+        <a class="btn btn-primary" href="#start" data-audit="1">Claim the free audit →</a>
+      </div>
       <p class="pnote">Prices in US dollars. Larger builds are paid in milestones, each approved before the next begins. Prefer payment protection? Hire me on <a href="https://www.upwork.com/freelancers/~013b18811972ffcb30" target="_blank" rel="noopener">Upwork</a>.</p>
     </div>
   </section>
@@ -1041,6 +1100,52 @@ font{background:transparent!important;box-shadow:none!important}
         <details><summary>What's the difference between a chatbot and an AI agent?</summary><p>A chatbot answers questions. An agent takes action: it processes a lead, updates your CRM, triggers a workflow, or drafts a reply and sends it to you for approval.</p></details>
         <details><summary>Can you fix something another developer built?</summary><p>Yes. I review the existing project, find where it fails, and fix it without rebuilding what already works.</p></details>
         <details><summary>Do you offer support after delivery?</summary><p>Yes. Every project includes documentation and a walkthrough, and I can stay on for ongoing fixes and improvements.</p></details>
+      </div>
+    </div>
+  </section>
+
+  <section id="start">
+    <div class="wrap">
+      <div class="sec-head">
+        <p class="eyebrow">Plan your project</p>
+        <h2>Tell me what eats your week. <span class="script">Get a plan</span> in 24 hours<span class="dot">.</span></h2>
+        <p class="lede">Answer four quick questions. You'll see which service fits and where the price starts, then send the brief to me in one tap.</p>
+      </div>
+      <div class="planner">
+        <form class="pform" id="pform" novalidate>
+          <fieldset><legend><span>1</span>What do you need?</legend><div class="pchips" id="pNeed"><button type="button" class="pchip" data-need="automate" aria-pressed="false">Automate a workflow</button><button type="button" class="pchip" data-need="agent" aria-pressed="false">AI agent or chatbot</button><button type="button" class="pchip" data-need="crm" aria-pressed="false">CRM & lead follow-up</button><button type="button" class="pchip" data-need="mcp" aria-pressed="false">Connect Claude to my tools</button><button type="button" class="pchip" data-need="rescue" aria-pressed="false">Fix a broken project</button><button type="button" class="pchip" data-need="web" aria-pressed="false">Website or dashboard</button><button type="button" class="pchip" data-need="audit" aria-pressed="false">Not sure yet: free audit</button></div></fieldset>
+          <fieldset><legend><span>2</span>Which tools do you use? <small>Pick any</small></legend><div class="pchips" id="pTools"><button type="button" class="pchip sm" data-tool="Google Sheets" aria-pressed="false">Google Sheets</button><button type="button" class="pchip sm" data-tool="Gmail" aria-pressed="false">Gmail</button><button type="button" class="pchip sm" data-tool="WhatsApp" aria-pressed="false">WhatsApp</button><button type="button" class="pchip sm" data-tool="HubSpot" aria-pressed="false">HubSpot</button><button type="button" class="pchip sm" data-tool="GoHighLevel" aria-pressed="false">GoHighLevel</button><button type="button" class="pchip sm" data-tool="Notion" aria-pressed="false">Notion</button><button type="button" class="pchip sm" data-tool="Shopify" aria-pressed="false">Shopify</button><button type="button" class="pchip sm" data-tool="Slack" aria-pressed="false">Slack</button><button type="button" class="pchip sm" data-tool="QuickBooks" aria-pressed="false">QuickBooks</button><button type="button" class="pchip sm" data-tool="Something else" aria-pressed="false">Something else</button></div></fieldset>
+          <fieldset><legend><span>3</span>What happens today?</legend>
+            <label class="sr" for="pMsg">Describe the work you want automated</label>
+            <textarea id="pMsg" rows="4" placeholder="Example: we get 40 enquiries a week on WhatsApp and someone copies each one into a spreadsheet by hand."></textarea>
+            <div class="prow">
+              <div><label for="pHours">Time it takes each week</label><select id="pHours"><option value="">Choose</option><option value="1">Under 2 hours</option><option value="3.5">2 to 5 hours</option><option value="7.5">5 to 10 hours</option><option value="12">10+ hours</option><option value="0">Not sure</option></select></div>
+              <div><label for="pWhen">When do you need it?</label><select id="pWhen"><option>As soon as possible</option><option selected>This month</option><option>Flexible</option></select></div>
+            </div>
+          </fieldset>
+          <fieldset><legend><span>4</span>How can I reach you?</legend>
+            <div class="prow">
+              <div><label for="pName">Your name</label><input id="pName" autocomplete="name"></div>
+              <div><label for="pContact">Email or WhatsApp</label><input id="pContact" autocomplete="email"></div>
+            </div>
+          </fieldset>
+        </form>
+        <aside class="presult" id="presult" aria-live="polite">
+          <p class="eyebrow">Your recommendation</p>
+          <div class="pempty" id="pEmpty">Pick what you need and your recommendation appears here.</div>
+          <div id="pFull" hidden>
+            <h3 id="rName"></h3>
+            <div class="pprice"><span id="rFrom">From</span><b id="rPrice"></b></div>
+            <p class="ptime" id="rTime"></p>
+            <ul class="pfeat" id="rFeat"></ul>
+            <p class="rsave" id="rSave" hidden></p>
+          </div>
+          <div class="rsend">
+            <button type="button" class="btn btn-wa" id="sendWa"><span class="sico">WA</span>Send brief on WhatsApp</button>
+            <button type="button" class="btn btn-ghost" id="sendMail">Send by email</button>
+          </div>
+          <p class="rnote" id="rNote">Fixed quote within 24 hours. No obligation.</p>
+        </aside>
       </div>
     </div>
   </section>
@@ -1141,6 +1246,8 @@ font{background:transparent!important;box-shadow:none!important}
 
   // project gallery: add a line here for each new image in img/gallery/
   var GALLERY=[
+    {src:'img/gallery/weekly-report-agent.webp',title:'Weekly Report Agent',sub:'Monday numbers as a plain-English email',cat:'AI agents',w:1280,h:860,href:'projects/weekly-report-agent/'},
+    {src:'img/gallery/invoice-reader.webp',title:'Invoice Reader',sub:'PDF invoices read by Claude and logged',cat:'Automations',w:1280,h:860,href:'projects/invoice-reader/'},
     {src:'img/gallery/n8n-claude-project-automation.webp',title:'Claude project automation',sub:'Request in, code written, tested and deployed',cat:'n8n',w:1600,h:800},
     {src:'img/gallery/make-claude-content-reporting.webp',title:'Content generation & reporting',sub:'Claude writes, routes and reports on every piece',cat:'Make.com',w:1600,h:800},
     {src:'img/gallery/n8n-manufacturing-orders.webp',title:'Manufacturing order to production',sub:'Orders, stock, purchase orders and QC in one flow',cat:'n8n',w:1600,h:800},
@@ -1242,13 +1349,61 @@ font{background:transparent!important;box-shadow:none!important}
     }
   })();
 
+
+  // project planner
+  (function(){
+    // Paste your n8n Webhook URL here to also receive each brief in n8n (see projects/ai-lead-qualifier/website-leads.n8n.json)
+    var LEAD_WEBHOOK='';
+    var PLANS={
+      automate:{n:'Focused automation',p:'$250',t:'3 to 7 days',f:['Map your current process','Build in n8n or Make.com','Error alerts so nothing fails silently','Walkthrough video and docs']},
+      agent:{n:'AI agent with Claude',p:'$500',t:'1 to 2 weeks',f:['Trained on your documents and FAQs','Connected to email, CRM or WhatsApp','Human approval steps','Tested with your real cases']},
+      crm:{n:'CRM & lead system',p:'$400',t:'1 to 2 weeks',f:['HubSpot or GoHighLevel pipeline','Lead scoring and replies with Claude','Follow-ups by email or WhatsApp','Weekly lead report']},
+      mcp:{n:'MCP server & integration',p:'$350',t:'About 1 week',f:['Connects Claude to your tools','Secure keys and permissions','Works in Claude and Claude Code','Setup guide for your team']},
+      rescue:{n:'Project rescue',p:'$150',t:'2 to 5 days',f:['Audit of what exists','Fix what is failing','Test before handover','Short report of what changed']},
+      web:{n:'Website or dashboard',p:'',t:'Fixed quote within 24 hours',f:['Built with Claude Code','Mobile-first and fast','Forms and integrations','Hosted on accounts you own']},
+      audit:{n:'Free automation audit',p:'Free',t:'Reply within 24 hours',f:['15-minute review of one workflow','Three ideas to save time with AI','Rough price for each idea','No obligation']}
+    };
+    var LABEL={automate:'Automate a workflow',agent:'An AI agent or chatbot',crm:'CRM & lead follow-up',mcp:'Connect Claude to my tools',rescue:'Fix a broken project',web:'A website or dashboard',audit:'The free automation audit'};
+    var need=null, tools=[], $=function(id){return document.getElementById(id);};
+    function render(){
+      if(!need){$('pEmpty').hidden=false;$('pFull').hidden=true;return;}
+      var pl=PLANS[need];$('pEmpty').hidden=true;$('pFull').hidden=false;
+      $('rName').textContent=pl.n;$('rFrom').textContent=pl.p&&pl.p!=='Free'?'From':'';$('rPrice').textContent=pl.p||'Custom';$('rTime').textContent=pl.t;
+      var ul=$('rFeat');ul.textContent='';pl.f.forEach(function(x){var li=document.createElement('li');li.textContent=x;ul.appendChild(li);});
+      var h=parseFloat($('pHours').value),sv=$('rSave');
+      if(h>0){var lo=Math.round(h*4*0.6),hi=Math.round(h*4.3);sv.hidden=false;sv.textContent='If most of that work is automated, that is roughly '+lo+' to '+hi+' hours a month back for your team.';}else sv.hidden=true;
+    }
+    [].forEach.call(document.querySelectorAll('[data-need]'),function(b){b.addEventListener('click',function(){need=b.dataset.need;[].forEach.call(document.querySelectorAll('[data-need]'),function(x){x.setAttribute('aria-pressed',String(x===b));});render();});});
+    [].forEach.call(document.querySelectorAll('[data-tool]'),function(b){b.addEventListener('click',function(){var t=b.dataset.tool,i=tools.indexOf(t);if(i<0)tools.push(t);else tools.splice(i,1);b.setAttribute('aria-pressed',String(i<0));});});
+    $('pHours').addEventListener('change',render);
+    [].forEach.call(document.querySelectorAll('[data-audit]'),function(a){a.addEventListener('click',function(){var b=document.querySelector('[data-need="audit"]');if(b)b.click();});});
+    function brief(){
+      var lines=['Hi Inioluwa, I found you through your website.','I need: '+(need?LABEL[need]:'(not chosen yet)')];
+      if(tools.length)lines.push('Tools we use: '+tools.join(', '));
+      var m=$('pMsg').value.trim();if(m)lines.push('What happens today: '+m);
+      var hs=$('pHours');if(hs.value!=='')lines.push('Time it takes: '+hs.options[hs.selectedIndex].text+' a week');
+      lines.push('Timeline: '+$('pWhen').value);
+      var n=$('pName').value.trim(),c=$('pContact').value.trim();if(n)lines.push('Name: '+n);if(c)lines.push('Contact: '+c);
+      return lines.join('\n');
+    }
+    function check(){var note=$('rNote');if(!need){note.className='rnote err';note.textContent='Pick what you need first (step 1).';document.getElementById('pNeed').scrollIntoView({behavior:'smooth',block:'center'});return false;}note.className='rnote';note.textContent='Fixed quote within 24 hours. No obligation.';return true;}
+    function hook(){
+      if(!LEAD_WEBHOOK)return;
+      var d=new URLSearchParams({need:need?LABEL[need]:'',tools:tools.join(', '),message:$('pMsg').value.trim(),hours:$('pHours').options[$('pHours').selectedIndex].text,timeline:$('pWhen').value,name:$('pName').value.trim(),contact:$('pContact').value.trim(),page:location.href});
+      try{fetch(LEAD_WEBHOOK,{method:'POST',mode:'no-cors',body:d});}catch(e){}
+    }
+    $('sendWa').addEventListener('click',function(){if(!check())return;hook();window.open('https://wa.me/2349066765517?text='+encodeURIComponent(brief()),'_blank','noopener');$('rNote').className='rnote ok';$('rNote').textContent='WhatsApp is opening with your brief. Just press send.';});
+    $('sendMail').addEventListener('click',function(){if(!check())return;hook();location.href='mailto:samuelsmart231@gmail.com?subject='+encodeURIComponent('Project brief: '+(LABEL[need]||''))+'&body='+encodeURIComponent(brief());$('rNote').className='rnote ok';$('rNote').textContent='Your email app is opening with the brief filled in.';});
+    render();
+  })();
+
   // rotating hero words
   var words=['on autopilot','handled by AI','done while you sleep','off your plate'], wi=0, rot=document.getElementById('rot');
   if(!matchMedia('(prefers-reduced-motion: reduce)').matches){
     setInterval(function(){rot.classList.add('out');setTimeout(function(){wi=(wi+1)%words.length;rot.firstChild.textContent=words[wi];rot.classList.remove('out');},350);},2800);
 
     // scroll reveal (only for things below the first screen)
-    var els=[].slice.call(document.querySelectorAll('.sec-head,.stats,.tk-head,.panel,.see .run,.case,.cs,.wf,.pcard,.phead,.srows,.icard,.wcol,.about-photo,.about-copy,.inds,.hcard,.steps li,.review,.faq,.cta-box'));
+    var els=[].slice.call(document.querySelectorAll('.sec-head,.stats,.tk-head,.panel,.see .run,.case,.cs,.wf,.own,.planner,.audit,.pcard,.phead,.srows,.icard,.wcol,.about-photo,.about-copy,.inds,.hcard,.steps li,.review,.faq,.cta-box'));
     if('IntersectionObserver' in window){
       var io=new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting){e.target.classList.remove('pre');io.unobserve(e.target);}});},{rootMargin:'0px 0px -8% 0px'});
       els.forEach(function(el,k){if(el.getBoundingClientRect().top>innerHeight){el.classList.add('rv','pre');el.style.transitionDelay=((k%3)*80)+'ms';io.observe(el);}});

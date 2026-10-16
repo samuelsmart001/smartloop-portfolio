@@ -1,0 +1,160 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="icon" type="image/svg+xml" href="/img/logo.svg">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+<title>Invoice Reader</title>
+<meta name="description" content="Supplier invoices arrive by email as PDFs. Claude reads each one, pulls out the vendor, amounts, due date and line items, and logs it in Google Sheets so nothing gets missed or typed twice.">
+<meta property="og:title" content="Invoice Reader · SamuelSmart Automation">
+<meta property="og:image" content="https://smartloop-portfolio.vercel.app/share.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,400..800&family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600&display=swap">
+<style>:root{
+  --paper:#06121A; --panel:#0B1E27; --raise:#0F2832; --ink:#EAF5F1; --muted:#8FA9AE; --line:#183541;
+  --accent:#39F28B; --accent-ink:#03140A; --signal:#FF6A2B; --soft:#0E2E2A;
+  --display:"Archivo","Arial Narrow",Arial,sans-serif; --body:"IBM Plex Sans",system-ui,-apple-system,"Segoe UI",sans-serif; --mono:"IBM Plex Mono",ui-monospace,Menlo,monospace;
+  color-scheme:dark}
+*{box-sizing:border-box}[hidden]{display:none!important}
+body{margin:0;background:radial-gradient(900px 500px at 90% -10%,color-mix(in srgb,var(--accent) 10%,transparent),transparent 60%),var(--paper);color:var(--ink);font:400 15.5px/1.6 var(--body)}
+a{color:var(--accent)}
+.wrap{max-width:1120px;margin:0 auto;padding-inline:18px;padding-block:22px 64px}
+:focus-visible{outline:2px solid var(--accent);outline-offset:2px;border-radius:6px}
+.top{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:34px}
+.brand{display:flex;align-items:center;gap:10px;text-decoration:none;color:var(--ink);font:800 1.1rem/1 var(--display);font-stretch:116%}
+.brand img{width:30px;height:30px}.brand b{color:var(--accent);font-weight:800}
+.back{font:600 .9rem/1 var(--body);text-decoration:none}
+.eyebrow{font:500 .72rem/1 var(--mono);letter-spacing:.14em;text-transform:uppercase;color:var(--accent)}
+h1{font:800 clamp(2.1rem,5.4vw,3.6rem)/1.02 var(--display);font-stretch:114%;letter-spacing:-.03em;margin:12px 0 12px;text-wrap:balance}
+h1 span{color:var(--accent)}
+.sub{color:var(--muted);max-width:62ch;font-size:1.05rem}
+.meta{display:flex;flex-wrap:wrap;gap:8px;margin-top:18px}
+.meta span{font:500 .8rem/1 var(--mono);padding:8px 11px;border:1px solid var(--line);border-radius:999px;background:var(--panel)}
+h2{font:800 clamp(1.4rem,3vw,1.9rem)/1.1 var(--display);font-stretch:108%;margin:0 0 6px}
+section{margin-top:44px}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:18px;padding:22px;min-width:0}
+.flow{list-style:none;margin:16px 0 0;padding:0;display:grid;grid-template-columns:repeat(5,1fr);gap:0}
+.fn{position:relative;display:grid;justify-items:center;text-align:center;gap:6px;padding:0 6px}
+.fn i{font-style:normal;width:60px;height:60px;border-radius:16px;display:grid;place-items:center;border:1.5px solid var(--line);background:var(--raise);font:700 .8rem/1 var(--mono);color:var(--accent);position:relative;z-index:1;transition:all .3s ease}
+.fn.ai i{color:var(--signal)}
+.fn b{font-size:.9rem;line-height:1.25}.fn small{color:var(--muted);font-size:.78rem;line-height:1.35}
+.fn:not(:last-child)::before{content:"";position:absolute;top:30px;left:calc(50% + 30px);right:calc(-50% + 30px);height:2px;background:var(--line)}
+.fn.on i{border-color:var(--accent);box-shadow:0 0 0 5px color-mix(in srgb,var(--accent) 22%,transparent);transform:translateY(-3px)}
+.fn.done i{border-color:var(--accent)}
+.fn.done:not(:last-child)::before{background:var(--accent)}
+@media (max-width:760px){.flow{grid-template-columns:1fr;gap:14px}.fn{grid-template-columns:52px 1fr;justify-items:start;text-align:left;column-gap:14px;row-gap:2px;padding:0}.fn i{width:52px;height:52px;grid-row:span 2}.fn b{align-self:end}.fn small{align-self:start}.fn:not(:last-child)::before{top:56px;bottom:-12px;left:25px;right:auto;width:2px;height:auto}}
+.runbar{display:flex;flex-wrap:wrap;align-items:center;gap:12px;margin-top:20px}
+.btn{display:inline-flex;align-items:center;gap:8px;padding:12px 18px;border-radius:999px;border:1px solid transparent;font:600 .95rem/1 var(--body);cursor:pointer;text-decoration:none}
+.btn-primary{background:var(--accent);color:var(--accent-ink);box-shadow:0 0 26px -6px color-mix(in srgb,var(--accent) 70%,transparent)}
+.btn-ghost{border-color:var(--line);color:var(--ink);background:var(--panel)}
+.status{font:500 .82rem/1.4 var(--mono);color:var(--muted)}
+.tag{font:500 .66rem/1 var(--mono);letter-spacing:.1em;text-transform:uppercase;color:var(--muted);border:1px dashed var(--line);border-radius:6px;padding:4px 6px}
+.io{display:grid;grid-template-columns:1fr 1fr;gap:18px;margin-top:16px}
+@media (max-width:860px){.io{grid-template-columns:1fr}}
+.io h3{display:flex;justify-content:space-between;align-items:center;margin:0 0 12px;font:700 1rem/1.2 var(--display)}
+.tbl{width:100%;border-collapse:collapse;font-size:.88rem;font-variant-numeric:tabular-nums}
+.tbl th{font:500 .68rem/1 var(--mono);letter-spacing:.08em;text-transform:uppercase;color:var(--muted);text-align:left;padding:8px 6px;border-bottom:1px solid var(--line)}
+.tbl td{padding:8px 6px;border-bottom:1px solid color-mix(in srgb,var(--line) 60%,transparent)}
+.tbl td.n,.tbl th.n{text-align:right}
+.scroll{overflow-x:auto}
+pre{margin:0;white-space:pre-wrap;font:400 .86rem/1.6 var(--mono);color:var(--ink)}
+.mail{font:400 .95rem/1.6 var(--body);white-space:pre-wrap}
+.mail .h{font:500 .8rem/1.6 var(--mono);color:var(--muted);border-bottom:1px solid var(--line);padding-bottom:8px;margin-bottom:10px;white-space:normal}
+.out{min-height:240px}
+.placeholder{color:var(--muted);font-style:italic}
+.steps{counter-reset:s;list-style:none;margin:14px 0 0;padding:0;display:grid;gap:10px}
+.steps li{counter-increment:s;display:grid;grid-template-columns:30px 1fr;gap:10px;padding:14px 16px;background:var(--panel);border:1px solid var(--line);border-radius:14px}
+.steps li::before{content:counter(s);display:grid;place-items:center;width:26px;height:26px;border-radius:8px;background:var(--accent);color:var(--accent-ink);font:700 .78rem/1 var(--mono)}
+.cta{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:center;gap:16px;margin-top:44px;padding:24px;border:1.5px solid var(--accent);border-radius:20px;background:var(--panel)}
+.cta b{font:800 1.25rem/1.2 var(--display)}
+.foot{margin-top:30px;font:400 .78rem/1.4 var(--mono);color:var(--muted)}
+@media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
+</style>
+<script defer src="/_vercel/insights/script.js"></script>
+</head>
+<body>
+<div class="wrap">
+  <div class="top"><a class="brand" href="/" translate="no"><img src="/img/logo.svg" alt="">Samuel<b>Smart</b></a><a class="back" href="/#work">← All projects</a></div>
+  <p class="eyebrow">SamuelSmart Automation · Project</p>
+  <h1>Invoice <span>Reader</span></h1>
+  <p class="sub">Supplier invoices arrive by email as PDFs. Claude reads each one, pulls out the vendor, amounts, due date and line items, and logs it in Google Sheets so nothing gets missed or typed twice.</p>
+  <div class="meta"><span>n8n</span><span>Claude API</span><span>Gmail</span><span>Google Sheets</span><span>Checks every minute</span></div>
+
+  <section class="card" aria-labelledby="hw">
+    <h2 id="hw">How it works</h2>
+    <p class="sub">The n8n workflow below runs on its own. Press the button to watch a sample run.</p>
+    <ol class="flow"><li class="fn"><i>GM</i><b>New invoice email</b><small>PDF attached</small></li><li class="fn"><i>PDF</i><b>Read the PDF</b><small>Extract the text</small></li><li class="fn ai"><i>CC</i><b>Claude reads it</b><small>Returns clean data</small></li><li class="fn"><i>GS</i><b>Log the invoice</b><small>New sheet row</small></li><li class="fn"><i>✓</i><b>Mark as done</b><small>Gmail label</small></li></ol>
+    <div class="runbar"><button class="btn btn-primary" id="run" type="button">▶ Run the sample</button><span class="status" id="st" role="status">Uses sample data.</span></div>
+  </section>
+
+  <section aria-labelledby="sr">
+    <h2 id="sr">Sample run</h2>
+    <div class="io">
+      <div class="card"><h3>The invoice (PDF text)<span class="tag">Sample data</span></h3><pre>BRIGHTLINE SUPPLIES LTD
+12 Allen Avenue, Ikeja, Lagos
+
+INVOICE       INV-2041
+Date          2 Oct 2026
+Due           16 Oct 2026
+Bill to       Kora Studio
+
+A4 printer paper (box)   10 x 18.50   185.00
+Toner cartridge           2 x 64.00   128.00
+Delivery                               15.00
+                         Subtotal     328.00
+                         VAT 7.5%      24.60
+                         TOTAL (USD)  352.60</pre>
+<p class="sub" style="font-size:.85rem;margin-top:10px">Arrives as a PDF attached to an email with “invoice” in the subject.</p></div>
+      <div class="card out-card"><h3>What Claude extracts<span class="tag">Output</span></h3><div class="out" id="out"><p class="placeholder">Press “Run the sample” to see the result.</p></div></div>
+    </div>
+    <template id="outT"></template>
+  </section>
+
+  <section aria-labelledby="su">
+    <h2 id="su">Run it in your own n8n</h2>
+    <p class="sub">You will need: an n8n account, Gmail, a Google Sheet, and an Anthropic API key.</p>
+    <ol class="steps"><li><span>Download the workflow file below and choose <b>Import from file</b> in n8n.</span></li><li><span>In <b>New invoice email</b>, connect Gmail. It watches for unread emails with a PDF and “invoice” in the subject.</span></li><li><span>In <b>Claude reads it</b>, add a Header Auth credential named <code>x-api-key</code> with your Anthropic API key.</span></li><li><span>In <b>Log the invoice</b>, connect Google and paste a sheet with a tab named <code>Invoices</code>.</span></li><li><span>In <b>Mark as done</b>, choose a Gmail label such as “Invoice logged”, then test with one real invoice and switch the workflow to Active.</span></li></ol>
+    <div class="runbar"><a class="btn btn-ghost" href="invoice-reader.n8n.json" download>Download the n8n workflow (.json)</a></div>
+  </section>
+
+  <div class="cta"><div><b>Want this running in your business?</b><br><span class="sub">I'll set it up with your tools and data, test it, and hand it over with docs.</span></div><a class="btn btn-primary" href="https://wa.me/2349066765517?text=Hi%20Inioluwa,%20I%20want%20the%20Invoice%20Reader%20set%20up%20for%20my%20business" target="_blank" rel="noopener">Talk to me on WhatsApp →</a></div>
+  <p class="foot">A SamuelSmart Automation project by Inioluwa Adebisi · <a href="/">smartloop-portfolio.vercel.app</a></p>
+</div>
+<div id="outFull" hidden><pre>{
+  "vendor": "Brightline Supplies Ltd",
+  "invoice_number": "INV-2041",
+  "date": "2026-10-02",
+  "due_date": "2026-10-16",
+  "currency": "USD",
+  "subtotal": 328.00,
+  "tax": 24.60,
+  "total": 352.60,
+  "items": [
+    {"description": "A4 printer paper (box)", "qty": 10, "unit_price": 18.50, "amount": 185.00},
+    {"description": "Toner cartridge", "qty": 2, "unit_price": 64.00, "amount": 128.00},
+    {"description": "Delivery", "qty": 1, "unit_price": 15.00, "amount": 15.00}
+  ]
+}</pre>
+<p class="sub" style="font-size:.85rem;margin:14px 0 6px">New row in your “Invoices” sheet:</p>
+<div class="scroll"><table class="tbl"><thead><tr><th>Vendor</th><th>Invoice</th><th>Due</th><th class="n">Total</th><th>Status</th></tr></thead><tbody><tr><td>Brightline Supplies Ltd</td><td>INV-2041</td><td>2026-10-16</td><td class="n">$352.60</td><td>To pay</td></tr></tbody></table></div></div>
+<script type="application/json" id="msgs">["New email from Brightline Supplies with invoice.pdf\u2026", "Reading the text from the PDF\u2026", "Claude is extracting vendor, totals and line items\u2026", "Adding a row to the \u201cInvoices\u201d sheet\u2026", "Labelled the email \u201cInvoice logged\u201d"]</script>
+<script>
+(function(){
+  var nodes=[].slice.call(document.querySelectorAll('.fn')),btn=document.getElementById('run'),st=document.getElementById('st'),out=document.getElementById('out'),full=document.getElementById('outFull').innerHTML,busy=false;
+  var still=matchMedia('(prefers-reduced-motion: reduce)').matches;
+  btn.addEventListener('click',function(){
+    if(busy)return;busy=true;btn.disabled=true;out.innerHTML='<p class="placeholder">Running…</p>';
+    nodes.forEach(function(n){n.classList.remove('on','done');});
+    var i=0,msgs=JSON.parse(document.getElementById('msgs').textContent);
+    (function step(){
+      if(i>0){nodes[i-1].classList.remove('on');nodes[i-1].classList.add('done');}
+      if(i<nodes.length){nodes[i].classList.add('on');st.textContent=msgs[i];i++;setTimeout(step,still?50:900);}
+      else{out.innerHTML=full;st.textContent='Done. Sample run finished.';busy=false;btn.disabled=false;btn.textContent='Run the sample again';}
+    })();
+  });
+})();
+</script>
+</body>
+</html>
