@@ -507,6 +507,46 @@ footer{border-top:1px solid var(--line);padding-block:44px 90px}
 .icard:hover .ia{color:var(--ic);transform:translate(2px,-2px)}
 @media (max-width:1000px){.icards{grid-template-columns:repeat(2,1fr)}}
 @media (max-width:520px){.icards{grid-template-columns:1fr}}
+
+/* pricing */
+.phead{display:grid;grid-template-columns:1.1fr .9fr;gap:30px;align-items:end;margin-bottom:44px}
+.phead h2{font-size:clamp(2.2rem,5.4vw,4rem);font-stretch:112%;letter-spacing:-.03em;line-height:1}
+.phead h2 .script{font-size:1.15em}
+@media (max-width:860px){.phead{grid-template-columns:1fr}}
+.pgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:24px}
+@media (max-width:980px){.pgrid{grid-template-columns:repeat(2,1fr)}}
+@media (max-width:620px){.pgrid{grid-template-columns:1fr}}
+.pcard{display:flex;flex-direction:column;gap:12px;padding:30px 28px;border:1.5px solid var(--line);border-radius:20px;background:var(--panel);transition:transform .22s ease,box-shadow .22s ease,border-color .22s ease}
+.pcard:hover{transform:translate(-5px,-5px);border-color:var(--accent);box-shadow:10px 10px 0 var(--accent)}
+.ptop{display:flex;justify-content:space-between;align-items:center;gap:10px}
+.pcard h3{font:800 1.3rem/1.15 var(--display);font-stretch:106%;letter-spacing:-.01em}
+.pbadge{font:600 .66rem/1 var(--mono);letter-spacing:.1em;text-transform:uppercase;padding:7px 10px;border-radius:999px;background:var(--signal);color:var(--signal-ink);white-space:nowrap}
+.pprice{display:flex;align-items:baseline;gap:8px;margin-top:8px}
+.pprice span{color:var(--muted);font-size:.95rem}
+.pprice b{font:850 clamp(2.6rem,4.4vw,3.4rem)/1 var(--display);font-stretch:108%;letter-spacing:-.03em;font-variant-numeric:tabular-nums}
+.ptime{font:600 .78rem/1 var(--mono);letter-spacing:.14em;text-transform:uppercase;color:var(--accent)}
+.pdesc{color:var(--muted)}
+.pfeat{list-style:none;margin:6px 0 0;padding:0;display:grid;gap:10px}
+.pfeat li{display:grid;grid-template-columns:20px 1fr;gap:8px;font-size:.95rem}
+.pfeat li::before{content:"✓";color:var(--accent);font-weight:700}
+.plink{margin-top:auto;padding-top:16px;font-weight:700;color:var(--ink);text-decoration:underline;text-underline-offset:4px;text-decoration-thickness:1.5px}
+.plink:hover{color:var(--accent)}
+.pcard.hot{background:var(--accent);border-color:var(--accent);color:var(--accent-ink)}
+.pcard.hot .pprice span,.pcard.hot .pdesc{color:color-mix(in srgb,var(--accent-ink) 75%,var(--accent))}
+.pcard.hot .ptime{color:var(--accent-ink)}
+.pcard.hot .pfeat li::before{color:var(--accent-ink)}
+.pcard.hot .plink{color:var(--accent-ink)}
+.pcard.hot:hover{box-shadow:10px 10px 0 var(--signal);border-color:var(--signal)}
+.pcard.pelse{border-style:dashed;background:transparent;justify-content:flex-start}
+.pcard.pelse .btn{margin-top:auto;align-self:flex-start}
+.pcard.pelse:hover{box-shadow:none;transform:none;border-color:var(--accent)}
+.psteps{list-style:none;margin:56px 0 0;padding:28px 0 0;border-top:1px solid var(--line);display:grid;grid-template-columns:repeat(4,1fr);gap:20px}
+.psteps li{font:700 1.05rem/1.3 var(--display);display:flex;gap:10px;align-items:baseline}
+.psteps span{font:600 .8rem/1 var(--mono);color:var(--accent)}
+@media (max-width:860px){.psteps{grid-template-columns:1fr 1fr}}
+@media (max-width:480px){.psteps{grid-template-columns:1fr}}
+.pnote{margin-top:20px;color:var(--muted);font-size:.92rem}
+.pnote a{color:var(--accent)}
 @media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}html{scroll-behavior:auto}}
 </style>
 </head>
@@ -522,6 +562,7 @@ footer{border-top:1px solid var(--line);padding-block:44px 90px}
       <li><a href="#about">About</a></li>
       <li><a href="#work">Work</a></li>
       <li><a href="#industries">Industries</a></li>
+      <li><a href="#pricing">Pricing</a></li>
       <li><a href="#hire">Hire me</a></li>
       <li><a href="#faq">FAQ</a></li>
     </ul>
@@ -844,6 +885,72 @@ footer{border-top:1px solid var(--line);padding-block:44px 90px}
     </div>
   </section>
 
+  <section id="pricing">
+    <div class="wrap">
+      <div class="phead">
+        <div>
+          <p class="eyebrow">Pricing</p>
+          <h2>Typical projects,<br><span class="script">clear</span> starting prices<span class="dot">.</span></h2>
+        </div>
+        <p class="lede">Every project gets its own fixed quote within 24 hours, so you know the full price before any work starts. These are where typical projects begin.</p>
+      </div>
+      <div class="pgrid">
+        <article class="pcard">
+          <div class="ptop"><h3>Focused automation</h3></div>
+          <div class="pprice"><span>From</span><b>$250</b></div>
+          <p class="ptime">3 to 7 days</p>
+          <p class="pdesc">One workflow that eats your team's hours, built to run on its own: lead capture, onboarding, invoicing or reporting.</p>
+          <ul class="pfeat"><li>Map your current process</li><li>Build in n8n or Make.com</li><li>Error alerts so nothing fails silently</li><li>Walkthrough video and docs</li></ul>
+          <a class="plink" href="https://wa.me/2349066765517?text=Hi%20Inioluwa%2C%20I%20am%20interested%20in%3A%20Focused%20automation" target="_blank" rel="noopener">Ask about this <span aria-hidden="true">↗</span></a>
+        </article>
+        <article class="pcard hot">
+          <div class="ptop"><h3>AI agent with Claude</h3><span class="pbadge">Most asked</span></div>
+          <div class="pprice"><span>From</span><b>$500</b></div>
+          <p class="ptime">1 to 2 weeks</p>
+          <p class="pdesc">A Claude agent that reads, decides and acts in your tools, and asks you before anything sensitive.</p>
+          <ul class="pfeat"><li>Trained on your documents and FAQs</li><li>Connected to email, CRM or WhatsApp</li><li>Human approval steps</li><li>Tested with your real cases</li></ul>
+          <a class="plink" href="https://wa.me/2349066765517?text=Hi%20Inioluwa%2C%20I%20am%20interested%20in%3A%20AI%20agent%20with%20Claude" target="_blank" rel="noopener">Ask about this <span aria-hidden="true">↗</span></a>
+        </article>
+        <article class="pcard">
+          <div class="ptop"><h3>CRM & lead system</h3></div>
+          <div class="pprice"><span>From</span><b>$400</b></div>
+          <p class="ptime">1 to 2 weeks</p>
+          <p class="pdesc">No lead waits two days for a reply. Every enquiry is captured, scored and followed up automatically.</p>
+          <ul class="pfeat"><li>HubSpot or GoHighLevel pipeline</li><li>Lead scoring and replies with Claude</li><li>Follow-ups by email or WhatsApp</li><li>Weekly lead report</li></ul>
+          <a class="plink" href="https://wa.me/2349066765517?text=Hi%20Inioluwa%2C%20I%20am%20interested%20in%3A%20CRM%20%26%20lead%20system" target="_blank" rel="noopener">Ask about this <span aria-hidden="true">↗</span></a>
+        </article>
+        <article class="pcard">
+          <div class="ptop"><h3>MCP server & integration</h3></div>
+          <div class="pprice"><span>From</span><b>$350</b></div>
+          <p class="ptime">About 1 week</p>
+          <p class="pdesc">Claude plugged straight into the tools you already use, so it can look things up and take action safely.</p>
+          <ul class="pfeat"><li>HubSpot, GoHighLevel, Notion or Shopify</li><li>Secure keys and permissions</li><li>Works in Claude and Claude Code</li><li>Setup guide for your team</li></ul>
+          <a class="plink" href="https://wa.me/2349066765517?text=Hi%20Inioluwa%2C%20I%20am%20interested%20in%3A%20MCP%20server%20%26%20integration" target="_blank" rel="noopener">Ask about this <span aria-hidden="true">↗</span></a>
+        </article>
+        <article class="pcard">
+          <div class="ptop"><h3>Project rescue</h3></div>
+          <div class="pprice"><span>From</span><b>$150</b></div>
+          <p class="ptime">2 to 5 days</p>
+          <p class="pdesc">Your Claude Code project, n8n flow or integration is 70 to 90% done but broken. I fix what fails without rebuilding it.</p>
+          <ul class="pfeat"><li>Audit of what exists</li><li>Fix the failing APIs, MCP or deploy</li><li>Test before handover</li><li>Short report of what changed</li></ul>
+          <a class="plink" href="https://wa.me/2349066765517?text=Hi%20Inioluwa%2C%20I%20am%20interested%20in%3A%20Project%20rescue" target="_blank" rel="noopener">Ask about this <span aria-hidden="true">↗</span></a>
+        </article>
+        <article class="pcard pelse">
+          <h3>Something else?</h3>
+          <p class="pdesc">A website or dashboard, Claude training for your team, a Telegram or WhatsApp bot, or something not listed here. Describe it and get a plan and a fixed price within 24 hours.</p>
+          <a class="btn btn-primary" href="https://wa.me/2349066765517?text=Hi%20Inioluwa%2C%20I%20need%20a%20fixed%20quote%20for%3A%20" target="_blank" rel="noopener">Get a fixed quote →</a>
+        </article>
+      </div>
+      <ol class="psteps">
+        <li><span>01</span>Tell me what eats your week</li>
+        <li><span>02</span>Fixed quote within 24 hours</li>
+        <li><span>03</span>Built and tested in milestones</li>
+        <li><span>04</span>Handover with docs and support</li>
+      </ol>
+      <p class="pnote">Prices in US dollars. Larger builds are paid in milestones, each approved before the next begins. Prefer payment protection? Hire me on <a href="https://www.upwork.com/freelancers/~013b18811972ffcb30" target="_blank" rel="noopener">Upwork</a>.</p>
+    </div>
+  </section>
+
   <section id="process">
     <div class="wrap">
       <div class="sec-head">
@@ -1065,7 +1172,7 @@ footer{border-top:1px solid var(--line);padding-block:44px 90px}
     setInterval(function(){rot.classList.add('out');setTimeout(function(){wi=(wi+1)%words.length;rot.firstChild.textContent=words[wi];rot.classList.remove('out');},350);},2800);
 
     // scroll reveal (only for things below the first screen)
-    var els=[].slice.call(document.querySelectorAll('.sec-head,.stats,.tk-head,.panel,.see .run,.case,.cs,.wf,.srows,.icard,.wcol,.about-photo,.about-copy,.inds,.hcard,.steps li,.review,.faq,.cta-box'));
+    var els=[].slice.call(document.querySelectorAll('.sec-head,.stats,.tk-head,.panel,.see .run,.case,.cs,.wf,.pcard,.phead,.srows,.icard,.wcol,.about-photo,.about-copy,.inds,.hcard,.steps li,.review,.faq,.cta-box'));
     if('IntersectionObserver' in window){
       var io=new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting){e.target.classList.remove('pre');io.unobserve(e.target);}});},{rootMargin:'0px 0px -8% 0px'});
       els.forEach(function(el,k){if(el.getBoundingClientRect().top>innerHeight){el.classList.add('rv','pre');el.style.transitionDelay=((k%3)*80)+'ms';io.observe(el);}});
