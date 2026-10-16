@@ -547,6 +547,26 @@ footer{border-top:1px solid var(--line);padding-block:44px 90px}
 @media (max-width:480px){.psteps{grid-template-columns:1fr}}
 .pnote{margin-top:20px;color:var(--muted);font-size:.92rem}
 .pnote a{color:var(--accent)}
+
+/* language switcher */
+.nav-right{display:flex;align-items:center;gap:10px}
+.lang{position:relative}
+.lang-btn{display:inline-flex;align-items:center;gap:6px;height:38px;padding:0 12px;border-radius:999px;border:1px solid var(--line);background:var(--panel);color:var(--ink);font:600 .82rem/1 var(--mono);cursor:pointer}
+.lang-btn:hover,.lang-btn[aria-expanded="true"]{border-color:var(--accent);color:var(--accent)}
+.nav .lang-menu{display:block;gap:0}
+.lang-menu{position:absolute;right:0;top:calc(100% + 8px);z-index:30;list-style:none;margin:0;padding:6px;width:200px;max-height:min(70vh,440px);overflow:auto;background:var(--panel);border:1px solid var(--line);border-radius:14px;box-shadow:0 24px 50px -20px rgba(0,0,0,.8)}
+.lang-menu button{display:flex;justify-content:space-between;align-items:center;width:100%;padding:9px 12px;border:0;border-radius:9px;background:none;color:var(--ink);font:500 .92rem/1.2 var(--body);text-align:left;cursor:pointer}
+.lang-menu button:hover{background:var(--raise)}
+.lang-menu button[aria-checked="true"]{color:var(--accent)}
+.lang-menu button[aria-checked="true"]::after{content:"✓"}
+.lang-tip{position:fixed;left:16px;bottom:calc(16px + env(safe-area-inset-bottom,0px));z-index:40;display:flex;align-items:center;gap:10px;flex-wrap:wrap;max-width:min(420px,calc(100vw - 32px));padding:12px 12px 12px 16px;border:1px solid var(--accent);border-radius:16px;background:var(--panel);box-shadow:0 20px 50px -20px rgba(0,0,0,.8);font-size:.92rem}
+.lang-tip-x{border:0;background:none;color:var(--muted);font-size:1rem;cursor:pointer;padding:6px}
+@media (max-width:560px){.nav-right .btn-wa{font-size:0;gap:0;padding:7px}.nav-right .btn-wa .sico{font-size:.72rem;min-width:24px}.lang-btn{padding:0 10px;height:38px}}
+/* hide Google's own translate bar */
+body{top:0!important}
+.skiptranslate iframe,iframe.skiptranslate,.goog-te-banner-frame,#goog-gt-tt,.goog-te-balloon-frame,.VIpgJd-ZVi9od-ORHb-OEVmcd,.VIpgJd-ZVi9od-aZ2wEe-wOHMyf{display:none!important}
+.goog-text-highlight{background:none!important;box-shadow:none!important}
+font{background:transparent!important;box-shadow:none!important}
 @media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}html{scroll-behavior:auto}}
 </style>
 </head>
@@ -555,7 +575,7 @@ footer{border-top:1px solid var(--line);padding-block:44px 90px}
   <div class="wrap">
     <a class="brand" href="#top" aria-label="SamuelSmart home">
       <svg viewBox="0 0 100 100" aria-hidden="true"><rect width="100" height="100" rx="24" fill="#39F28B"/><path d="M50 50C42 43 37 40.5 32 40.5C27 40.5 23.5 44 23.5 50C23.5 56 27 59.5 32 59.5C37 59.5 42 57 50 50C58 43 63 40.5 68 40.5C73 40.5 76.5 44 76.5 50C76.5 56 73 59.5 68 59.5C63 59.5 58 57 50 50Z" fill="none" stroke="#06121A" stroke-width="9.2" stroke-linejoin="round"/><circle cx="76.4" cy="26.4" r="7.8" fill="#FF6A2B"/></svg>
-      <span>Samuel<span class="hl">Smart</span></span>
+      <span class="notranslate" translate="no">Samuel<span class="hl">Smart</span></span>
     </a>
     <ul>
       <li><a href="#services">Services</a></li>
@@ -566,7 +586,13 @@ footer{border-top:1px solid var(--line);padding-block:44px 90px}
       <li><a href="#hire">Hire me</a></li>
       <li><a href="#faq">FAQ</a></li>
     </ul>
+    <div class="nav-right">
+    <div class="lang notranslate" translate="no">
+      <button type="button" class="lang-btn" id="langBtn" aria-haspopup="true" aria-expanded="false" aria-label="Change language"><svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true"><circle cx="12" cy="12" r="9.5" fill="none" stroke="currentColor" stroke-width="1.7"/><path d="M2.5 12h19M12 2.5c2.6 2.8 3.9 6 3.9 9.5s-1.3 6.7-3.9 9.5c-2.6-2.8-3.9-6-3.9-9.5S9.4 5.3 12 2.5Z" fill="none" stroke="currentColor" stroke-width="1.7"/></svg><span id="langCode">EN</span></button>
+      <ul class="lang-menu" id="langMenu" role="menu" hidden><li><button type="button" role="menuitemradio" data-lang="en" lang="en">English</button></li><li><button type="button" role="menuitemradio" data-lang="fr" lang="fr">Français</button></li><li><button type="button" role="menuitemradio" data-lang="es" lang="es">Español</button></li><li><button type="button" role="menuitemradio" data-lang="pt" lang="pt">Português</button></li><li><button type="button" role="menuitemradio" data-lang="de" lang="de">Deutsch</button></li><li><button type="button" role="menuitemradio" data-lang="it" lang="it">Italiano</button></li><li><button type="button" role="menuitemradio" data-lang="nl" lang="nl">Nederlands</button></li><li><button type="button" role="menuitemradio" data-lang="ar" lang="ar">العربية</button></li><li><button type="button" role="menuitemradio" data-lang="zh-CN" lang="zh-CN">中文</button></li><li><button type="button" role="menuitemradio" data-lang="ja" lang="ja">日本語</button></li><li><button type="button" role="menuitemradio" data-lang="ko" lang="ko">한국어</button></li><li><button type="button" role="menuitemradio" data-lang="hi" lang="hi">हिन्दी</button></li><li><button type="button" role="menuitemradio" data-lang="ru" lang="ru">Русский</button></li><li><button type="button" role="menuitemradio" data-lang="tr" lang="tr">Türkçe</button></li><li><button type="button" role="menuitemradio" data-lang="sw" lang="sw">Kiswahili</button></li><li><button type="button" role="menuitemradio" data-lang="yo" lang="yo">Yorùbá</button></li><li><button type="button" role="menuitemradio" data-lang="ha" lang="ha">Hausa</button></li><li><button type="button" role="menuitemradio" data-lang="ig" lang="ig">Igbo</button></li></ul>
+    </div>
     <a class="btn btn-wa btn-sm" href="https://wa.me/2349066765517?text=Hi%20Inioluwa%2C%20I%20have%20a%20workflow%20I%27d%20like%20to%20automate." target="_blank" rel="noopener"><span class="sico">WA</span>Let's talk</a>
+    </div>
   </div>
 </header>
 
@@ -606,7 +632,7 @@ footer{border-top:1px solid var(--line);padding-block:44px 90px}
         </button>
         <div class="rdots" id="rdots" aria-hidden="true"><i class="on"></i><i></i><i></i></div>
         <div class="runchip">lead-intake.flow<br><em>✓ completed · 39s</em></div>
-        <div class="namecard"><b>Inioluwa Adebisi</b><small>Claude Code developer · Nigeria, WAT</small></div>
+        <div class="namecard"><b class="notranslate" translate="no">Inioluwa Adebisi</b><small>Claude Code developer · Nigeria, WAT</small></div>
       </div>
     </div>
   </div>
@@ -1032,7 +1058,7 @@ footer{border-top:1px solid var(--line);padding-block:44px 90px}
         </div>
         <div class="socials">
           <a href="https://www.linkedin.com/in/adebisi-samuel-inioluwa-49b4b3280" target="_blank" rel="noopener"><span class="sico">in</span>LinkedIn</a>
-          <span class="mail"><span id="mailAddr">samuelsmart231@gmail.com</span><button type="button" id="copyMail">Copy</button></span>
+          <span class="mail"><span id="mailAddr" class="notranslate" translate="no">samuelsmart231@gmail.com</span><button type="button" id="copyMail">Copy</button></span>
         </div>
         <p class="wa-num">WhatsApp: <span>+234 906 676 5517</span></p>
         <p class="wa-num">Prefer to talk now? Tap the AI agent button in the corner and ask it anything about my services.</p>
@@ -1048,7 +1074,7 @@ footer{border-top:1px solid var(--line);padding-block:44px 90px}
   <div class="wrap">
     <div class="fgrid">
       <div>
-        <a class="brand" href="#top"><svg viewBox="0 0 100 100" aria-hidden="true"><rect width="100" height="100" rx="24" fill="#39F28B"/><path d="M50 50C42 43 37 40.5 32 40.5C27 40.5 23.5 44 23.5 50C23.5 56 27 59.5 32 59.5C37 59.5 42 57 50 50C58 43 63 40.5 68 40.5C73 40.5 76.5 44 76.5 50C76.5 56 73 59.5 68 59.5C63 59.5 58 57 50 50Z" fill="none" stroke="#06121A" stroke-width="9.2" stroke-linejoin="round"/><circle cx="76.4" cy="26.4" r="7.8" fill="#FF6A2B"/></svg><span>Samuel<span class="hl">Smart</span></span></a>
+        <a class="brand" href="#top"><svg viewBox="0 0 100 100" aria-hidden="true"><rect width="100" height="100" rx="24" fill="#39F28B"/><path d="M50 50C42 43 37 40.5 32 40.5C27 40.5 23.5 44 23.5 50C23.5 56 27 59.5 32 59.5C37 59.5 42 57 50 50C58 43 63 40.5 68 40.5C73 40.5 76.5 44 76.5 50C76.5 56 73 59.5 68 59.5C63 59.5 58 57 50 50Z" fill="none" stroke="#06121A" stroke-width="9.2" stroke-linejoin="round"/><circle cx="76.4" cy="26.4" r="7.8" fill="#FF6A2B"/></svg><span class="notranslate" translate="no">Samuel<span class="hl">Smart</span></span></a>
         <p>Claude Code agents, automations and apps for businesses that are done doing it by hand.</p>
       </div>
       <div><h4>Services</h4><ul><li><a href="#services">Automations</a></li><li><a href="#services">AI agents</a></li><li><a href="#services">MCP &amp; integrations</a></li><li><a href="#services">Apps &amp; websites</a></li></ul></div>
@@ -1062,6 +1088,12 @@ footer{border-top:1px solid var(--line);padding-block:44px 90px}
 
 <a class="wa-float" href="https://wa.me/2349066765517?text=Hi%20Inioluwa%2C%20I%20have%20a%20workflow%20I%27d%20like%20to%20automate." target="_blank" rel="noopener" aria-label="Message me on WhatsApp"><span class="sico">WA</span><span class="wa-txt">Message me</span></a>
 
+<div class="lang-tip notranslate" translate="no" id="langTip" hidden role="dialog" aria-label="Language suggestion">
+  <span id="langTipText"></span>
+  <button type="button" class="btn btn-primary btn-sm" id="langTipYes"></button>
+  <button type="button" class="lang-tip-x" id="langTipNo" aria-label="Keep English">✕</button>
+</div>
+<div id="gt_el" hidden></div>
 <script>
 (function(){
   // network background
@@ -1166,6 +1198,50 @@ footer{border-top:1px solid var(--line);padding-block:44px 90px}
     }
   })();
 
+
+  // language switcher (Google Translate under the hood)
+  (function(){
+    var NAMES={en:'English',fr:'Français',es:'Español',pt:'Português',de:'Deutsch',it:'Italiano',nl:'Nederlands',ar:'العربية','zh-CN':'中文',ja:'日本語',ko:'한국어',hi:'हिन्दी',ru:'Русский',tr:'Türkçe',sw:'Kiswahili',yo:'Yorùbá',ha:'Hausa',ig:'Igbo'};
+    var ASK={fr:['Voir ce site en français ?','Oui, en français'],es:['¿Ver este sitio en español?','Sí, en español'],pt:['Ver este site em português?','Sim, em português'],de:['Diese Seite auf Deutsch ansehen?','Ja, auf Deutsch'],it:['Vedere il sito in italiano?','Sì, in italiano'],nl:['Deze site in het Nederlands bekijken?','Ja, in het Nederlands'],ar:['هل تريد عرض الموقع بالعربية؟','نعم، بالعربية'],'zh-CN':['用中文查看本网站？','是的，中文'],ja:['日本語で表示しますか？','はい、日本語で'],ko:['한국어로 보시겠어요?','네, 한국어로'],hi:['क्या यह साइट हिन्दी में देखें?','हाँ, हिन्दी में'],ru:['Открыть сайт на русском?','Да, на русском'],tr:['Siteyi Türkçe görüntüle?','Evet, Türkçe'],sw:['Tazama tovuti hii kwa Kiswahili?','Ndiyo, Kiswahili'],yo:['Ṣé o fẹ́ wo ojú-òpó yìí ní Yorùbá?','Bẹ́ẹ̀ni, Yorùbá'],ha:['Duba wannan shafi da Hausa?','Ee, da Hausa'],ig:['Lee saịtị a n\'Igbo?','Ee, n\'Igbo']};
+    var btn=document.getElementById('langBtn'), menu=document.getElementById('langMenu'), code=document.getElementById('langCode');
+    function store(k,v){try{v===null?localStorage.removeItem(k):localStorage.setItem(k,v);}catch(e){}}
+    function read(k){try{return localStorage.getItem(k);}catch(e){return null;}}
+    function cookieLang(){var m=document.cookie.match(/(?:^|;\s*)googtrans=\/[^\/]*\/([^;]+)/);return m?decodeURIComponent(m[1]):'en';}
+    function setCookie(v){var host=location.hostname, exp=v?'':';expires=Thu, 01 Jan 1970 00:00:00 GMT', val=v?('/en/'+v):'';
+      document.cookie='googtrans='+val+';path=/'+exp; if(host.indexOf('.')>0){document.cookie='googtrans='+val+';path=/;domain='+host+exp; document.cookie='googtrans='+val+';path=/;domain=.'+host+exp;}}
+    var current=cookieLang();
+    function mark(){code.textContent=(current==='zh-CN'?'ZH':current.toUpperCase().slice(0,2));[].forEach.call(menu.querySelectorAll('button'),function(b){b.setAttribute('aria-checked',b.dataset.lang===current);});document.documentElement.dir=current==='ar'?'rtl':'ltr';document.documentElement.lang=current;}
+    mark();
+    var loaded=false;
+    function loadGT(cb){
+      if(loaded){cb&&cb();return;} loaded=true;
+      window.googleTranslateElementInit=function(){new google.translate.TranslateElement({pageLanguage:'en',autoDisplay:false},'gt_el');cb&&setTimeout(cb,400);};
+      var sc=document.createElement('script');sc.src='https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit';sc.async=true;document.body.appendChild(sc);
+    }
+    function apply(lang){
+      store('ss_lang',lang); store('ss_lang_asked','1');
+      if(lang==='en'){setCookie(null);current='en';location.reload();return;}
+      setCookie(lang);current=lang;mark();
+      loadGT(function(){var tries=0;(function pick(){var sel=document.querySelector('.goog-te-combo');if(sel){sel.value=lang;sel.dispatchEvent(new Event('change'));}else if(tries++<25){setTimeout(pick,200);}else{location.reload();}})();});
+    }
+    if(current!=='en')loadGT();
+    function close(){menu.hidden=true;btn.setAttribute('aria-expanded','false');}
+    btn.addEventListener('click',function(e){e.stopPropagation();var open=menu.hidden;menu.hidden=!open;btn.setAttribute('aria-expanded',String(open));});
+    menu.addEventListener('click',function(e){var b=e.target.closest('button');if(!b)return;close();if(b.dataset.lang!==current)apply(b.dataset.lang);});
+    document.addEventListener('click',function(e){if(!e.target.closest('.lang'))close();});
+    document.addEventListener('keydown',function(e){if(e.key==='Escape')close();});
+    // suggest the visitor's own language once
+    var tip=document.getElementById('langTip');
+    if(current==='en' && !read('ss_lang_asked')){
+      var nav=(navigator.languages&&navigator.languages[0])||navigator.language||'en', base=nav.split('-')[0], guess=null;
+      if(base==='zh')guess='zh-CN'; else if(ASK[base])guess=base;
+      if(guess){document.getElementById('langTipText').textContent=ASK[guess][0];var y=document.getElementById('langTipYes');y.textContent=ASK[guess][1];
+        setTimeout(function(){tip.hidden=false;},2500);
+        y.onclick=function(){tip.hidden=true;apply(guess);};
+        document.getElementById('langTipNo').onclick=function(){tip.hidden=true;store('ss_lang_asked','1');};}
+    }
+  })();
+
   // rotating hero words
   var words=['on autopilot','handled by AI','done while you sleep','off your plate'], wi=0, rot=document.getElementById('rot');
   if(!matchMedia('(prefers-reduced-motion: reduce)').matches){
@@ -1216,5 +1292,6 @@ footer{border-top:1px solid var(--line);padding-block:44px 90px}
 
 <elevenlabs-convai agent-id="agent_4301kbwvtv74enbs2f01szz2fnjr"></elevenlabs-convai>
 <script src="https://unpkg.com/@elevenlabs/convai-widget-embed" async type="text/javascript"></script>
+
 </body>
 </html>
